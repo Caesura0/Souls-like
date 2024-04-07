@@ -82,11 +82,13 @@ namespace JS
             saveFileDataWriter = new SaveFileDataWriter();
             saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
 
+
+
+
             saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUses(CharacterSlots.characterSlot1);
-
-
             if (!saveFileDataWriter.CheckToSeeIfFileExists())
             {
+                Debug.Log(CharacterSlots.characterSlot1 + " is full");
                 currentCharacterSlotBeingUsed = CharacterSlots.characterSlot1;
                 currentCharacterData = new CharacterSaveData();
                 StartCoroutine(LoadWorldScene());
@@ -95,6 +97,7 @@ namespace JS
             saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUses(CharacterSlots.characterSlot2);
             if (!saveFileDataWriter.CheckToSeeIfFileExists())
             {
+                Debug.Log(CharacterSlots.characterSlot1 + " is full");
                 currentCharacterSlotBeingUsed = CharacterSlots.characterSlot2;
                 currentCharacterData = new CharacterSaveData();
                 StartCoroutine(LoadWorldScene());
@@ -103,6 +106,7 @@ namespace JS
             saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUses(CharacterSlots.characterSlot3);
             if (!saveFileDataWriter.CheckToSeeIfFileExists())
             {
+                Debug.Log(CharacterSlots.characterSlot1 + " is full");
                 currentCharacterSlotBeingUsed = CharacterSlots.characterSlot3;
                 currentCharacterData = new CharacterSaveData();
                 StartCoroutine(LoadWorldScene());
@@ -135,6 +139,15 @@ namespace JS
             player.SaveGameDataToCurrentCharacterData(ref currentCharacterData);
             
             saveFileDataWriter.CreateNewCharacterSaveFile(currentCharacterData);
+        }
+
+        public void DeleteGame(CharacterSlots characterSlots)
+        {
+            saveFileDataWriter = new SaveFileDataWriter();
+            //Generally works on multiple machine types
+            saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
+            saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUses(characterSlots);
+            saveFileDataWriter.DeleteSaveFile();
         }
 
         void LoadAllCharacterProfiles()
@@ -172,7 +185,12 @@ namespace JS
 
         public IEnumerator LoadWorldScene()
         {
-            AsyncOperation loadOperator = SceneManager.LoadSceneAsync(worldSceneIndex);
+            //
+            //AsyncOperation loadOperator = SceneManager.LoadSceneAsync(worldSceneIndex);
+
+
+            AsyncOperation loadOperator = SceneManager.LoadSceneAsync(currentCharacterData.sceneIndex);
+
             player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
             yield return null;
         }

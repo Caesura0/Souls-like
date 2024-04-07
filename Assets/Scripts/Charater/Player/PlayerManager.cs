@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 namespace JS
 {
     public class PlayerManager : CharaterManager
@@ -66,6 +67,7 @@ namespace JS
 
         public void SaveGameDataToCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
         {
+            currentCharacterSaveData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
             currentCharacterSaveData.characterName = playerNetworkManager.characterName.Value.ToString();
             currentCharacterSaveData.yPosition = transform.position.y;
             currentCharacterSaveData.xPosition = transform.position.x;
@@ -74,6 +76,7 @@ namespace JS
         }
         public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterSaveData)
         {
+
             playerNetworkManager.characterName.Value = currentCharacterSaveData.characterName;
             Vector3 position = new Vector3(currentCharacterSaveData.xPosition, currentCharacterSaveData.yPosition, currentCharacterSaveData.zPosition);
 

@@ -153,7 +153,7 @@ namespace JS
             }
 
             Debug.Log("MoveAmount = " + moveAmount);
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount, player.playerNetworkManager.isSprinting.Value);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
 
             //if we are not locked on, only idle, 
             //i definitely do not prefer this, why does the input manager know about the player?

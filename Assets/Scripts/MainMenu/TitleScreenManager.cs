@@ -21,11 +21,14 @@ namespace JS
         [SerializeField] Button loadMenuReturnButton;
         [SerializeField] Button mainMenuLoadGameButton;
         [SerializeField] Button noCharactorSlotsOkayButton;
+        [SerializeField] Button deleteCharacterPopupConfirmButton;
 
         //pop ups
         [SerializeField] GameObject noCharactorSlotsPopUp;
+        [SerializeField] GameObject deleteCharactorSlotsPopUp;
 
         //save slots
+
 
         public CharacterSlots currentlySelectedSlot = CharacterSlots.NO_SLOT;
 
@@ -52,7 +55,7 @@ namespace JS
         public void StartNewGame()
         {
             WorldSaveGameManager.Instance.TryCreateNewGame();
-            StartCoroutine(WorldSaveGameManager.Instance.LoadWorldScene());
+
         }
 
         public void OpenLoadGameMenu()
@@ -61,6 +64,9 @@ namespace JS
             titleScreenLoadMenu.SetActive(true);
             loadMenuReturnButton.Select();
         }
+
+
+
         public void CloseLoadGameMenu()
         {
             titleScreenLoadMenu.SetActive(false);
@@ -91,6 +97,37 @@ namespace JS
         {
             currentlySelectedSlot = CharacterSlots.NO_SLOT;
         }
+
+        public void AttemptToDeleteCharacterSlot()
+        {
+            if(currentlySelectedSlot != CharacterSlots.NO_SLOT)
+            {
+                deleteCharactorSlotsPopUp.SetActive(true);
+                deleteCharacterPopupConfirmButton.Select();
+            }
+
+        }
+
+        //hooks to UI button
+        public void DeleteCharactorSlot()
+        {
+            deleteCharactorSlotsPopUp.SetActive(false);
+            WorldSaveGameManager.Instance.DeleteGame(currentlySelectedSlot);
+            //cheater way to refresh the saves
+            titleScreenLoadMenu.SetActive(false);
+            titleScreenLoadMenu.SetActive(true);
+
+
+            loadMenuReturnButton.Select();
+        }
+
+        public void CloseDeleteCharacterPopup()
+        {
+            deleteCharactorSlotsPopUp.SetActive(false);
+            loadMenuReturnButton.Select();
+        }
+
+
     }
 
 
